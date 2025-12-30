@@ -47,8 +47,8 @@ namespace DuAnDauDoi
             {
                 Button seatButton = new Button
                 {
-                    Width = 120,
-                    Height = 120,
+                    Width = 100,
+                    Height = 100,
                     Text = $"{table.Soban}",
                     Tag = table.Maban, 
                     Font = new Font("Arial", 10, FontStyle.Bold),
