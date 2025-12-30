@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+using System.Drawing;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
@@ -123,10 +123,11 @@ namespace DuAnDauDoi
             // 
             this.flowLayoutPanel1.BackColor = System.Drawing.Color.White;
             this.flowLayoutPanel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(20, 20);
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Padding = new System.Windows.Forms.Padding(10);
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1040, 680);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1040, 722);
             this.flowLayoutPanel1.TabIndex = 5;
             // 
             // btnDb
@@ -152,12 +153,12 @@ namespace DuAnDauDoi
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(240)))), ((int)(((byte)(241)))));
             this.ClientSize = new System.Drawing.Size(1395, 722);
             this.Controls.Add(this.btnDb);
-            this.Controls.Add(this.flowLayoutPanel1);
-            this.Controls.Add(this.btnThanhToan);
             this.Controls.Add(this.btnLS);
+            this.Controls.Add(this.btnThanhToan);
             this.Controls.Add(this.btnHD);
             this.Controls.Add(this.BtnSua);
             this.Controls.Add(this.btnGoi);
+            this.Controls.Add(this.flowLayoutPanel1);
             this.Name = "FormBan";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "🏠 Quản Lý Nhà Hàng";
