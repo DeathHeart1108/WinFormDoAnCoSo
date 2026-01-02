@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -26,16 +26,13 @@ namespace DuAnDauDoi
         {
             InitializeComponent();
             _table = table;
-
-            // Cấu hình UI
             flowLayoutPanel1.AutoScroll = true;
             flowLayoutPanel1.WrapContents = true;
             lbBAN.Text = $"Số Bàn: {_table.Soban}";
-
-            // Đăng ký sự kiện
+            LoadComboBoxLoaiMon();
             btnXacnhan.Click += BtnXacnhan_Click;
             btnHuy.Click += (s, e) => this.Close();
-            lbSL.Click += lbSL_Click; 
+            lbSL.Click += lbSL_Click;
             dgvMon.CellClick += dgvMon_CellClick;
             cboLoaimon.SelectedIndexChanged += CboLoaimon_SelectedIndexChanged;
 
@@ -212,7 +209,30 @@ namespace DuAnDauDoi
 
         private void CboLoaimon_SelectedIndexChanged(object sender, EventArgs e)
         {
-            LoadMonButtonsByTenLoai(string.IsNullOrEmpty(cboLoaimon.Text) ? null : cboLoaimon.Text);
+            if (cboLoaimon.SelectedIndex != -1)
+            {
+                string tenLoai = cboLoaimon.Text;
+                LoadMonButtonsByTenLoai(tenLoai);
+            }
+            else
+            {
+                LoadMonButtonsByTenLoai(null);
+            }
+        }
+        private void LoadComboBoxLoaiMon()
+        {
+            using (var db = new Model1())
+            {
+                var listLoai = db.Loaimons.AsNoTracking().ToList();
+
+                listLoai.Insert(0, new Loaimon { Tenloai = "Tất cả các món", Maloai = -1 });
+
+                cboLoaimon.DataSource = listLoai;
+                cboLoaimon.DisplayMember = "Tenloai";
+                cboLoaimon.ValueMember = "Maloai";
+
+                cboLoaimon.SelectedIndex = 0; 
+            }
         }
     }
 }
