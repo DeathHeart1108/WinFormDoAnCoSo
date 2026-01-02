@@ -45,11 +45,12 @@ namespace DuAnDauDoi
             // btnGoi
             // 
             this.btnGoi.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
+            this.btnGoi.BackgroundImage = global::DuAnDauDoi.Properties.Resources.istockphoto_1158657776_612x612;
             this.btnGoi.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnGoi.FlatAppearance.BorderSize = 0;
             this.btnGoi.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnGoi.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this.btnGoi.ForeColor = System.Drawing.Color.White;
+            this.btnGoi.ForeColor = System.Drawing.Color.Black;
             this.btnGoi.Location = new System.Drawing.Point(1080, 20);
             this.btnGoi.Name = "btnGoi";
             this.btnGoi.Size = new System.Drawing.Size(290, 70);
@@ -60,11 +61,12 @@ namespace DuAnDauDoi
             // BtnSua
             // 
             this.BtnSua.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(196)))), ((int)(((byte)(15)))));
+            this.BtnSua.BackgroundImage = global::DuAnDauDoi.Properties.Resources.istockphoto_1158657776_612x612;
             this.BtnSua.Cursor = System.Windows.Forms.Cursors.Hand;
             this.BtnSua.FlatAppearance.BorderSize = 0;
             this.BtnSua.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BtnSua.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this.BtnSua.ForeColor = System.Drawing.Color.White;
+            this.BtnSua.ForeColor = System.Drawing.Color.Black;
             this.BtnSua.Location = new System.Drawing.Point(1080, 110);
             this.BtnSua.Name = "BtnSua";
             this.BtnSua.Size = new System.Drawing.Size(290, 70);
@@ -75,11 +77,12 @@ namespace DuAnDauDoi
             // btnHD
             // 
             this.btnHD.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(89)))), ((int)(((byte)(182)))));
+            this.btnHD.BackgroundImage = global::DuAnDauDoi.Properties.Resources.istockphoto_1158657776_612x612;
             this.btnHD.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnHD.FlatAppearance.BorderSize = 0;
             this.btnHD.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnHD.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this.btnHD.ForeColor = System.Drawing.Color.White;
+            this.btnHD.ForeColor = System.Drawing.Color.Black;
             this.btnHD.Location = new System.Drawing.Point(1080, 200);
             this.btnHD.Name = "btnHD";
             this.btnHD.Size = new System.Drawing.Size(290, 70);
@@ -91,11 +94,12 @@ namespace DuAnDauDoi
             // btnLS
             // 
             this.btnLS.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(126)))), ((int)(((byte)(34)))));
+            this.btnLS.BackgroundImage = global::DuAnDauDoi.Properties.Resources.istockphoto_1158657776_612x612;
             this.btnLS.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnLS.FlatAppearance.BorderSize = 0;
             this.btnLS.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLS.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this.btnLS.ForeColor = System.Drawing.Color.White;
+            this.btnLS.ForeColor = System.Drawing.Color.Black;
             this.btnLS.Location = new System.Drawing.Point(1080, 380);
             this.btnLS.Name = "btnLS";
             this.btnLS.Size = new System.Drawing.Size(290, 70);
@@ -107,11 +111,12 @@ namespace DuAnDauDoi
             // btnThanhToan
             // 
             this.btnThanhToan.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
+            this.btnThanhToan.BackgroundImage = global::DuAnDauDoi.Properties.Resources.istockphoto_1158657776_612x612;
             this.btnThanhToan.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnThanhToan.FlatAppearance.BorderSize = 0;
             this.btnThanhToan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnThanhToan.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this.btnThanhToan.ForeColor = System.Drawing.Color.White;
+            this.btnThanhToan.ForeColor = System.Drawing.Color.Black;
             this.btnThanhToan.Location = new System.Drawing.Point(1080, 290);
             this.btnThanhToan.Name = "btnThanhToan";
             this.btnThanhToan.Size = new System.Drawing.Size(290, 70);
@@ -133,11 +138,12 @@ namespace DuAnDauDoi
             // btnDb
             // 
             this.btnDb.BackColor = System.Drawing.Color.Brown;
+            this.btnDb.BackgroundImage = global::DuAnDauDoi.Properties.Resources.istockphoto_1158657776_612x612;
             this.btnDb.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnDb.FlatAppearance.BorderSize = 0;
             this.btnDb.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDb.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this.btnDb.ForeColor = System.Drawing.Color.White;
+            this.btnDb.ForeColor = System.Drawing.Color.Black;
             this.btnDb.Location = new System.Drawing.Point(1080, 475);
             this.btnDb.Name = "btnDb";
             this.btnDb.Size = new System.Drawing.Size(290, 70);
@@ -150,7 +156,8 @@ namespace DuAnDauDoi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(240)))), ((int)(((byte)(241)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(174)))), ((int)(((byte)(198)))), ((int)(((byte)(207)))));
+            this.BackgroundImage = global::DuAnDauDoi.Properties.Resources.download;
             this.ClientSize = new System.Drawing.Size(1395, 722);
             this.Controls.Add(this.btnDb);
             this.Controls.Add(this.btnLS);
