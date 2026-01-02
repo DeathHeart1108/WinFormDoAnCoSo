@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+using System.Drawing;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
@@ -24,7 +24,7 @@ namespace DuAnDauDoi
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.lbBAN = new System.Windows.Forms.Label();
             this.dgvMon = new System.Windows.Forms.DataGridView();
             this.ColMon = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -46,6 +46,7 @@ namespace DuAnDauDoi
             this.lbBAN.BackColor = System.Drawing.Color.Transparent;
             this.lbBAN.Font = new System.Drawing.Font("Segoe UI", 22F, System.Drawing.FontStyle.Bold);
             this.lbBAN.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
+            this.lbBAN.Image = global::DuAnDauDoi.Properties.Resources.istockphoto_1158657776_612x612;
             this.lbBAN.Location = new System.Drawing.Point(22, 15);
             this.lbBAN.Name = "lbBAN";
             this.lbBAN.Size = new System.Drawing.Size(189, 60);
@@ -57,15 +58,15 @@ namespace DuAnDauDoi
             this.dgvMon.AllowUserToAddRows = false;
             this.dgvMon.BackgroundColor = System.Drawing.Color.White;
             this.dgvMon.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(196)))), ((int)(((byte)(15)))));
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.Padding = new System.Windows.Forms.Padding(5);
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvMon.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(196)))), ((int)(((byte)(15)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.Padding = new System.Windows.Forms.Padding(5);
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvMon.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvMon.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvMon.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColMon,
@@ -78,7 +79,7 @@ namespace DuAnDauDoi
             this.dgvMon.RowHeadersWidth = 62;
             this.dgvMon.RowTemplate.Height = 35;
             this.dgvMon.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvMon.Size = new System.Drawing.Size(511, 370);
+            this.dgvMon.Size = new System.Drawing.Size(728, 370);
             this.dgvMon.TabIndex = 1;
             // 
             // ColMon
@@ -118,10 +119,10 @@ namespace DuAnDauDoi
             // 
             this.txtSL.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtSL.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.txtSL.Location = new System.Drawing.Point(810, 475);
+            this.txtSL.Location = new System.Drawing.Point(845, 475);
             this.txtSL.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtSL.Name = "txtSL";
-            this.txtSL.Size = new System.Drawing.Size(296, 50);
+            this.txtSL.Size = new System.Drawing.Size(478, 50);
             this.txtSL.TabIndex = 3;
             // 
             // lbSL
@@ -129,7 +130,8 @@ namespace DuAnDauDoi
             this.lbSL.AutoSize = true;
             this.lbSL.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.lbSL.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
-            this.lbSL.Location = new System.Drawing.Point(595, 482);
+            this.lbSL.Image = global::DuAnDauDoi.Properties.Resources.istockphoto_1158657776_612x612;
+            this.lbSL.Location = new System.Drawing.Point(599, 482);
             this.lbSL.Name = "lbSL";
             this.lbSL.Size = new System.Drawing.Size(192, 38);
             this.lbSL.TabIndex = 4;
@@ -139,12 +141,13 @@ namespace DuAnDauDoi
             // btnXacnhan
             // 
             this.btnXacnhan.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
+            this.btnXacnhan.BackgroundImage = global::DuAnDauDoi.Properties.Resources.istockphoto_1158657776_612x612;
             this.btnXacnhan.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnXacnhan.FlatAppearance.BorderSize = 0;
             this.btnXacnhan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnXacnhan.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
-            this.btnXacnhan.ForeColor = System.Drawing.Color.White;
-            this.btnXacnhan.Location = new System.Drawing.Point(732, 545);
+            this.btnXacnhan.ForeColor = System.Drawing.Color.Black;
+            this.btnXacnhan.Location = new System.Drawing.Point(845, 545);
             this.btnXacnhan.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnXacnhan.Name = "btnXacnhan";
             this.btnXacnhan.Size = new System.Drawing.Size(200, 70);
@@ -155,12 +158,13 @@ namespace DuAnDauDoi
             // btnHuy
             // 
             this.btnHuy.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
+            this.btnHuy.BackgroundImage = global::DuAnDauDoi.Properties.Resources.istockphoto_1158657776_612x612;
             this.btnHuy.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnHuy.FlatAppearance.BorderSize = 0;
             this.btnHuy.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnHuy.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
-            this.btnHuy.ForeColor = System.Drawing.Color.White;
-            this.btnHuy.Location = new System.Drawing.Point(957, 545);
+            this.btnHuy.ForeColor = System.Drawing.Color.Black;
+            this.btnHuy.Location = new System.Drawing.Point(1172, 545);
             this.btnHuy.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnHuy.Name = "btnHuy";
             this.btnHuy.Size = new System.Drawing.Size(149, 70);
@@ -183,18 +187,19 @@ namespace DuAnDauDoi
             this.cboLoaimon.Location = new System.Drawing.Point(595, 15);
             this.cboLoaimon.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cboLoaimon.Name = "cboLoaimon";
-            this.cboLoaimon.Size = new System.Drawing.Size(511, 46);
+            this.cboLoaimon.Size = new System.Drawing.Size(728, 46);
             this.cboLoaimon.TabIndex = 8;
             // 
             // btnXoa
             // 
             this.btnXoa.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.btnXoa.BackgroundImage = global::DuAnDauDoi.Properties.Resources.istockphoto_1158657776_612x612;
             this.btnXoa.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnXoa.FlatAppearance.BorderSize = 0;
             this.btnXoa.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnXoa.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
-            this.btnXoa.ForeColor = System.Drawing.Color.White;
-            this.btnXoa.Location = new System.Drawing.Point(586, 545);
+            this.btnXoa.ForeColor = System.Drawing.Color.Black;
+            this.btnXoa.Location = new System.Drawing.Point(595, 545);
             this.btnXoa.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnXoa.Name = "btnXoa";
             this.btnXoa.Size = new System.Drawing.Size(119, 70);
@@ -207,8 +212,9 @@ namespace DuAnDauDoi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(240)))), ((int)(((byte)(241)))));
-            this.ClientSize = new System.Drawing.Size(1127, 665);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(174)))), ((int)(((byte)(198)))), ((int)(((byte)(207)))));
+            this.BackgroundImage = global::DuAnDauDoi.Properties.Resources.download;
+            this.ClientSize = new System.Drawing.Size(1333, 665);
             this.Controls.Add(this.btnXoa);
             this.Controls.Add(this.cboLoaimon);
             this.Controls.Add(this.btnHuy);
