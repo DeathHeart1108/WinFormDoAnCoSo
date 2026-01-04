@@ -87,15 +87,21 @@ namespace DuAnDauDoi
                 int newQty = currentQty + 1;
                 existingRow.Cells["ColSl"].Value = newQty;
                 existingRow.Cells["ColGia"].Value = unitPrice * newQty;
-
                 txtSL.Text = newQty.ToString(); // Đồng bộ số lượng lên ô nhập
+                
+                // Focus row
+                dgvMon.CurrentCell = existingRow.Cells[0];
             }
             else
             {
                 // NẾU CHƯA: Thêm mới dòng với SL = 1
                 int rowIndex = dgvMon.Rows.Add(_selectedMon.Tenmon, 1, unitPrice);
-                dgvMon.Rows[rowIndex].Tag = _selectedMon;
+                var newRow = dgvMon.Rows[rowIndex];
+                newRow.Tag = _selectedMon;
                 txtSL.Text = "1";
+
+                // Focus row
+                dgvMon.CurrentCell = newRow.Cells[0];
             }
 
             HighlightSelectedMonButton(_selectedMon.Mamon);

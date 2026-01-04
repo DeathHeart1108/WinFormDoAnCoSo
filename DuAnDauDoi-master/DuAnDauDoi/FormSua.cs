@@ -112,15 +112,23 @@ namespace DuAnDauDoi
                 existingRow.Cells["ColSl"].Value = newQty;
                 existingRow.Cells["ColGia"].Value = unitPrice * newQty;
                 txtSL.Text = newQty.ToString();
+
+                // Focus row
+                dgvMon.CurrentCell = existingRow.Cells[0];
             }
             else
             {
                 int idx = dgvMon.Rows.Add(_selectedMon.Tenmon, 1, unitPrice);
-                dgvMon.Rows[idx].Tag = _selectedMon;
+                var newRow = dgvMon.Rows[idx];
+                newRow.Tag = _selectedMon;
                 txtSL.Text = "1";
+
+                // Focus row
+                dgvMon.CurrentCell = newRow.Cells[0];
             }
 
             HighlightSelectedMonButton(_selectedMon.Mamon);
+            SyncToDatabase(); // Real-time sync
         }
 
         // --- XỬ LÝ TRÊN GRID ---
@@ -170,6 +178,7 @@ namespace DuAnDauDoi
             string tenMon = dgvMon.CurrentRow.Cells[0].Value?.ToString();
             dgvMon.Rows.Remove(dgvMon.CurrentRow);
             ResetSelection();
+            SyncToDatabase(); // Real-time sync
         }
 
         // --- DỮ LIỆU DATABASE ---
@@ -190,32 +199,67 @@ namespace DuAnDauDoi
             }
         }
 
-        private void BtnXacnhan_Click(object sender, EventArgs e)
+        private void SyncToDatabase()
         {
-            var validRows = dgvMon.Rows.Cast<DataGridViewRow>().Where(r => !r.IsNewRow).ToList();
-
             try
             {
-                if (_currentHoadon == null) return;
+                if (_table == null) return;
 
-                var items = new List<Tuple<int, int>>();
-                foreach (var row in validRows)
+                var items = new List<Tuple<int, int>>(); 
+                foreach (DataGridViewRow row in dgvMon.Rows)
                 {
-                    int mamonId = GetMamonFromTag(row.Tag);
-                    int sl = Convert.ToInt32(row.Cells["ColSl"].Value);
-                    items.Add(new Tuple<int, int>(mamonId, sl));
+                    if (row.IsNewRow) continue;
+                    
+                    int mamon = GetMamonFromTag(row.Tag);
+                    if (mamon > 0)
+                    {
+                        int qty = Convert.ToInt32(row.Cells["ColSl"].Value);
+                        items.Add(new Tuple<int, int>(mamon, qty));
+                    }
                 }
 
-                _hoadonService.UpdateOrder(_currentHoadon.Mahd, _table.Maban, items);
-
-                MessageBox.Show("Cập nhật thành công!", "Thông báo");
-                this.DialogResult = DialogResult.OK;
-                this.Close();
+                if (_currentHoadon != null)
+                {
+                     _hoadonService.UpdateOrder(_currentHoadon.Mahd, _table.Maban, items);
+                }
+                else
+                {
+                     var unpaid = _hoadonService.GetUnpaidInvoiceByTable(_table.Maban);
+                     if (unpaid != null)
+                     {
+                         _currentHoadon = unpaid;
+                         _hoadonService.UpdateOrder(_currentHoadon.Mahd, _table.Maban, items);
+                     }
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi: " + ex.Message);
+                MessageBox.Show("Lỗi đồng bộ dữ liệu: " + ex.Message);
             }
+        }
+
+        private void BtnXacnhan_Click(object sender, EventArgs e)
+        {
+             // Force sync one last time and close or message
+             if (_selectedMon != null && dgvMon.CurrentRow != null && !string.IsNullOrWhiteSpace(txtSL.Text))
+            {
+                if (int.TryParse(txtSL.Text.Trim(), out var newQty))
+                {
+                    if (newQty <= 0)
+                    {
+                        dgvMon.Rows.Remove(dgvMon.CurrentRow);
+                    }
+                    else
+                    {
+                        var unitPrice = _selectedMon.Giamon ?? 0m;
+                        dgvMon.CurrentRow.Cells["ColSl"].Value = newQty;
+                        dgvMon.CurrentRow.Cells["ColGia"].Value = unitPrice * newQty;
+                    }
+                    ResetSelection();
+                }
+            }
+            SyncToDatabase();
+            MessageBox.Show("Cập nhật món thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         // --- HÀM TRỢ GIÚP ---

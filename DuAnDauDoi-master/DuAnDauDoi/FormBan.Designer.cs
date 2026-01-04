@@ -33,53 +33,14 @@ namespace DuAnDauDoi
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnGoi = new System.Windows.Forms.Button();
-            this.BtnSua = new System.Windows.Forms.Button();
-            this.btnHD = new System.Windows.Forms.Button();
-            this.btnLS = new System.Windows.Forms.Button();
-            this.btnThanhToan = new System.Windows.Forms.Button();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.btnDb = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.chứcNăngToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lịchSửToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.đặtBànToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.gộpBànToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // btnGoi
-            // 
-            this.btnGoi.Location = new System.Drawing.Point(0, 0);
-            this.btnGoi.Name = "btnGoi";
-            this.btnGoi.Size = new System.Drawing.Size(75, 23);
-            this.btnGoi.TabIndex = 0;
-            // 
-            // BtnSua
-            // 
-            this.BtnSua.Location = new System.Drawing.Point(0, 0);
-            this.BtnSua.Name = "BtnSua";
-            this.BtnSua.Size = new System.Drawing.Size(75, 23);
-            this.BtnSua.TabIndex = 0;
-            // 
-            // btnHD
-            // 
-            this.btnHD.Location = new System.Drawing.Point(0, 0);
-            this.btnHD.Name = "btnHD";
-            this.btnHD.Size = new System.Drawing.Size(75, 23);
-            this.btnHD.TabIndex = 0;
-            // 
-            // btnLS
-            // 
-            this.btnLS.Location = new System.Drawing.Point(0, 0);
-            this.btnLS.Name = "btnLS";
-            this.btnLS.Size = new System.Drawing.Size(75, 23);
-            this.btnLS.TabIndex = 0;
-            // 
-            // btnThanhToan
-            // 
-            this.btnThanhToan.Location = new System.Drawing.Point(0, 0);
-            this.btnThanhToan.Name = "btnThanhToan";
-            this.btnThanhToan.Size = new System.Drawing.Size(75, 23);
-            this.btnThanhToan.TabIndex = 0;
             // 
             // flowLayoutPanel1
             // 
@@ -92,13 +53,6 @@ namespace DuAnDauDoi
             this.flowLayoutPanel1.Padding = new System.Windows.Forms.Padding(10);
             this.flowLayoutPanel1.Size = new System.Drawing.Size(1395, 722);
             this.flowLayoutPanel1.TabIndex = 5;
-            // 
-            // btnDb
-            // 
-            this.btnDb.Location = new System.Drawing.Point(0, 0);
-            this.btnDb.Name = "btnDb";
-            this.btnDb.Size = new System.Drawing.Size(75, 23);
-            this.btnDb.TabIndex = 0;
             // 
             // menuStrip1
             // 
@@ -115,17 +69,36 @@ namespace DuAnDauDoi
             // chứcNăngToolStripMenuItem
             // 
             this.chứcNăngToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.lịchSửToolStripMenuItem});
+            this.lịchSửToolStripMenuItem,
+            this.đặtBànToolStripMenuItem,
+            this.gộpBànToolStripMenuItem});
             this.chứcNăngToolStripMenuItem.Name = "chứcNăngToolStripMenuItem";
             this.chứcNăngToolStripMenuItem.Size = new System.Drawing.Size(113, 29);
             this.chứcNăngToolStripMenuItem.Text = "Chức năng";
             // 
             // lịchSửToolStripMenuItem
             // 
+            this.lịchSửToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lịchSửToolStripMenuItem.Name = "lịchSửToolStripMenuItem";
-            this.lịchSửToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.lịchSửToolStripMenuItem.Size = new System.Drawing.Size(270, 40);
             this.lịchSửToolStripMenuItem.Text = "Lịch sử";
             this.lịchSửToolStripMenuItem.Click += new System.EventHandler(this.lịchSửToolStripMenuItem_Click);
+            // 
+            // đặtBànToolStripMenuItem
+            // 
+            this.đặtBànToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.đặtBànToolStripMenuItem.Name = "đặtBànToolStripMenuItem";
+            this.đặtBànToolStripMenuItem.Size = new System.Drawing.Size(270, 40);
+            this.đặtBànToolStripMenuItem.Text = "Đặt bàn";
+            this.đặtBànToolStripMenuItem.Click += new System.EventHandler(this.đặtBànToolStripMenuItem_Click);
+            // 
+            // gộpBànToolStripMenuItem
+            // 
+            this.gộpBànToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gộpBànToolStripMenuItem.Name = "gộpBànToolStripMenuItem";
+            this.gộpBànToolStripMenuItem.Size = new System.Drawing.Size(270, 40);
+            this.gộpBànToolStripMenuItem.Text = "Chuyển bàn";
+            this.gộpBànToolStripMenuItem.Click += new System.EventHandler(this.gộpBànToolStripMenuItem_Click);
             // 
             // FormBan
             // 
@@ -148,15 +121,11 @@ namespace DuAnDauDoi
 
         #endregion
 
-        private Button btnGoi;
-        private Button BtnSua;
-        private Button btnHD;
-        private Button btnLS;
-        private Button btnThanhToan;
         private FlowLayoutPanel flowLayoutPanel1;
-        private Button btnDb;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem chứcNăngToolStripMenuItem;
         private ToolStripMenuItem lịchSửToolStripMenuItem;
+        private ToolStripMenuItem đặtBànToolStripMenuItem;
+        private ToolStripMenuItem gộpBànToolStripMenuItem;
     }
 }

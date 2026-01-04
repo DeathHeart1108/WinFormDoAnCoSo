@@ -116,7 +116,7 @@ namespace DuAnDauDoi
         private void btnThanhToan_Click(object sender, EventArgs e)
         {
             if (_currentHoadon == null) return;
-            DialogResult result = MessageBox.Show($"Xác nhận thanh toán cho bàn {_table?.Soban}?",
+            DialogResult result = MessageBox.Show($"Xác nhận thanh toán cho {_table?.Soban}?",
                 "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result == DialogResult.Yes)

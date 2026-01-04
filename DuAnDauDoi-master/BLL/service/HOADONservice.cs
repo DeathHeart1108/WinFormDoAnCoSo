@@ -251,5 +251,90 @@ namespace BLL.Service
             } while (context.Hoadons.Any(h => h.Mahd == newMahd));
             return newMahd;
         }
+        public void MergeTable(int sourceTableId, int destTableId)
+        {
+            using (var db = new Model1())
+            {
+                using (var transaction = db.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var sourceHoadon = db.Hoadons.FirstOrDefault(h => h.Maban == sourceTableId && h.Status == 0);
+                        if (sourceHoadon == null) return; // Không có gì để chuyển
+
+                        var destHoadon = db.Hoadons.FirstOrDefault(h => h.Maban == destTableId && h.Status == 0);
+
+                        if (destHoadon == null)
+                        {
+                            // Trường hợp 1: Bàn đích chưa có hóa đơn -> Chuyển toàn bộ hóa đơn sang bàn đích
+                            sourceHoadon.Maban = destTableId;
+                            
+                            // Cập nhật trạng thái bàn
+                            var sourceBan = db.Bans.Find(sourceTableId);
+                            if (sourceBan != null) sourceBan.Status = "Trống";
+
+                            var destBan = db.Bans.Find(destTableId);
+                            if (destBan != null) destBan.Status = "Có khách";
+                        }
+                        else
+                        {
+                            // Trường hợp 2: Bàn đích đã có hóa đơn -> Gộp chi tiết hóa đơn
+                            var sourceDetails = db.Cthds.Where(c => c.Mahd == sourceHoadon.Mahd).ToList();
+                            
+                            foreach (var detail in sourceDetails)
+                            {
+                                // Kiểm tra xem món này đã có trong hóa đơn đích chưa
+                                var destDetail = db.Cthds.FirstOrDefault(c => c.Mahd == destHoadon.Mahd && c.Mamon == detail.Mamon);
+                                if (destDetail != null)
+                                {
+                                    destDetail.Sl += detail.Sl;
+                                }
+                                else
+                                {
+                                    // Tạo chi tiết mới cho hóa đơn đích
+                                    string randomSuffix = GenerateRandomString(3);
+                                    string maCTHD = $"CT{destHoadon.Mahd.Substring(destHoadon.Mahd.Length - 3)}{randomSuffix}";
+                                    while (db.Cthds.Any(x => x.Macthd == maCTHD))
+                                    {
+                                        randomSuffix = GenerateRandomString(3);
+                                        maCTHD = $"CT{destHoadon.Mahd.Substring(destHoadon.Mahd.Length - 3)}{randomSuffix}";
+                                    }
+
+                                    db.Cthds.Add(new Cthd
+                                    {
+                                        Macthd = maCTHD,
+                                        Mahd = destHoadon.Mahd,
+                                        Mamon = detail.Mamon,
+                                        Sl = detail.Sl,
+                                        Khuyenmai = detail.Khuyenmai
+                                    });
+                                }
+                            }
+
+                            // Cập nhật tổng tiền bàn đích (cần tính lại toàn bộ để chính xác)
+                            // Hiện tại chúng ta cộng dồn nhưng tốt nhất là tính lại từ đầu hoặc cộng từ sourceHoadon.Tongtien
+                            // Ở đây ta tính đơn giản là cộng thêm sourceHoadon.Tongtien (nếu sourceHoadon.Tongtien đã đúng)
+                            destHoadon.Tongtien = (destHoadon.Tongtien ?? 0) + (sourceHoadon.Tongtien ?? 0);
+
+                            // Xóa hóa đơn bàn nguồn
+                            db.Cthds.RemoveRange(sourceDetails); // Xóa chi tiết bàn nguồn
+                            db.Hoadons.Remove(sourceHoadon);     // Xóa hóa đơn bàn nguồn
+
+                            // Cập nhật trạng thái bàn nguồn thành Trống
+                            var sourceBan = db.Bans.Find(sourceTableId);
+                            if (sourceBan != null) sourceBan.Status = "Trống";
+                        }
+
+                        db.SaveChanges();
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
     }
 }

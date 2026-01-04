@@ -24,7 +24,7 @@ namespace DuAnDauDoi
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.lbBAN = new System.Windows.Forms.Label();
             this.dgvMon = new System.Windows.Forms.DataGridView();
             this.ColMon = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -55,15 +55,15 @@ namespace DuAnDauDoi
             this.dgvMon.AllowUserToAddRows = false;
             this.dgvMon.BackgroundColor = System.Drawing.Color.White;
             this.dgvMon.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(89)))), ((int)(((byte)(182)))));
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.Padding = new System.Windows.Forms.Padding(5);
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvMon.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(89)))), ((int)(((byte)(182)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.Padding = new System.Windows.Forms.Padding(5);
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvMon.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvMon.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvMon.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColMon,
@@ -113,12 +113,12 @@ namespace DuAnDauDoi
             this.btnThanhToan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnThanhToan.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.btnThanhToan.ForeColor = System.Drawing.Color.Black;
-            this.btnThanhToan.Location = new System.Drawing.Point(443, 606);
+            this.btnThanhToan.Location = new System.Drawing.Point(443, 607);
             this.btnThanhToan.Margin = new System.Windows.Forms.Padding(2);
             this.btnThanhToan.Name = "btnThanhToan";
-            this.btnThanhToan.Size = new System.Drawing.Size(258, 56);
+            this.btnThanhToan.Size = new System.Drawing.Size(258, 96);
             this.btnThanhToan.TabIndex = 6;
-            this.btnThanhToan.Text = "💵Thanh Toán";
+            this.btnThanhToan.Text = "💵Xác nhận thanh toán thành công";
             this.btnThanhToan.UseVisualStyleBackColor = false;
             this.btnThanhToan.Click += new System.EventHandler(this.btnThanhToan_Click);
             // 
@@ -131,10 +131,10 @@ namespace DuAnDauDoi
             this.btnIn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnIn.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.btnIn.ForeColor = System.Drawing.Color.Black;
-            this.btnIn.Location = new System.Drawing.Point(32, 606);
+            this.btnIn.Location = new System.Drawing.Point(32, 607);
             this.btnIn.Margin = new System.Windows.Forms.Padding(2);
             this.btnIn.Name = "btnIn";
-            this.btnIn.Size = new System.Drawing.Size(225, 56);
+            this.btnIn.Size = new System.Drawing.Size(225, 96);
             this.btnIn.TabIndex = 7;
             this.btnIn.Text = "🖨️ In Hóa Đơn";
             this.btnIn.UseVisualStyleBackColor = false;
@@ -171,7 +171,7 @@ namespace DuAnDauDoi
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(174)))), ((int)(((byte)(198)))), ((int)(((byte)(207)))));
             this.BackgroundImage = global::DuAnDauDoi.Properties.Resources.download;
-            this.ClientSize = new System.Drawing.Size(720, 685);
+            this.ClientSize = new System.Drawing.Size(720, 711);
             this.Controls.Add(this.lbHd);
             this.Controls.Add(this.lbTongTien);
             this.Controls.Add(this.btnIn);

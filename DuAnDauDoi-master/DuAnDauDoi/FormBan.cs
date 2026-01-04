@@ -96,8 +96,6 @@ namespace DuAnDauDoi
             var table = _banService.GetById(tableId);
             if (table == null) return;
 
-            // Cập nhật nhãn nút Đặt bàn (giữ nguyên logic cũ)
-            btnDb.Text = (table.Status == "Đã đặt bàn") ? "🕛 Hủy Đặt" : "🕛 Đặt Bàn";
 
             // 3. LOGIC QUAN TRỌNG: Kiểm tra hóa đơn để mở Form tương ứng
             // Chúng ta sử dụng hàm GetUnpaidInvoiceByTable mà bạn đã dùng trong FormSua
@@ -146,7 +144,6 @@ namespace DuAnDauDoi
                 RefreshButtonAppearance(_currentSelectedButton);
                 _currentSelectedButton = null;
             }
-            btnDb.Text = "🕛 Đặt Bàn";
         }
 
         private void ExecuteTableAction(Action<Ban> action)
@@ -163,6 +160,98 @@ namespace DuAnDauDoi
         {
             FormLichsu f = new FormLichsu();
             f.ShowDialog();
+        }
+
+        private void đặtBànToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string input = InputDialog.Show("Đặt Bàn", "Nhập Mã bàn (Maban) cần đặt:");
+            if (string.IsNullOrEmpty(input)) return;
+
+            if (!int.TryParse(input, out int tableId))
+            {
+                MessageBox.Show("Mã bàn phải là số!");
+                return;
+            }
+
+            var table = _banService.GetById(tableId);
+
+            if (table == null)
+            {
+                MessageBox.Show("Bàn không tồn tại!");
+                return;
+            }
+
+            // Kiểm tra hóa đơn
+            var hoadon = _hoadonService.GetUnpaidInvoiceByTable(table.Maban);
+            if (hoadon != null)
+            {
+                 MessageBox.Show("Bàn này đang có hóa đơn chưa thanh toán, không thể đặt!");
+                 return;
+            }
+
+            if (table.Status == "Trống")
+            {
+                table.Status = "Đã đặt bàn";
+                _banService.UpdateStatus(table.Maban, "Đã đặt bàn");
+                MessageBox.Show($"Đã đặt bàn số {table.Soban} (Mã: {table.Maban}) thành công!");
+            }
+            else if (table.Status == "Đã đặt bàn")
+            {
+                 table.Status = "Trống";
+                 _banService.UpdateStatus(table.Maban, "Trống");
+                 MessageBox.Show($"Đã hủy đặt bàn số {table.Soban} (Mã: {table.Maban}) thành công!");
+            }
+            else
+            {
+                MessageBox.Show($"Bàn đang ở trạng thái '{table.Status}', không thể đặt!");
+                return;
+            }
+            
+            // Refresh UI
+            CreateSeats();
+        }
+
+        private void gộpBànToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // 1. Nhập bàn chuyển đi
+            string sourceInput = InputDialog.Show("Gộp Bàn", "Nhập Mã bàn CẦN CHUYỂN (Nguồn):");
+            if (string.IsNullOrEmpty(sourceInput)) return;
+
+            // 2. Nhập bàn chuyển tới
+            string destInput = InputDialog.Show("Gộp Bàn", "Nhập Mã bàn CHUYỂN TỚI (Đích):");
+            if (string.IsNullOrEmpty(destInput)) return;
+
+            if (sourceInput == destInput)
+            {
+                MessageBox.Show("Hai bàn phải khác nhau!");
+                return;
+            }
+
+            if (!int.TryParse(sourceInput, out int sourceId) || !int.TryParse(destInput, out int destId))
+            {
+                 MessageBox.Show("Mã bàn phải là số!");
+                 return;
+            }
+
+            var sourceTable = _banService.GetById(sourceId);
+            var destTable = _banService.GetById(destId);
+
+            if (sourceTable == null || destTable == null)
+            {
+                MessageBox.Show("Một trong hai bàn không tồn tại!");
+                return;
+            }
+
+            try 
+            {
+                _hoadonService.MergeTable(sourceTable.Maban, destTable.Maban);
+                CreateSeats();
+                MessageBox.Show($"Đã gộp bàn {sourceTable.Soban} vào bàn {destTable.Soban} thành công!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi gộp bàn: " + ex.Message);
+            }
         }
     }
 }
