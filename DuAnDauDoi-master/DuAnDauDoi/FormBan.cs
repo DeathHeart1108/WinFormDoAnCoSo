@@ -11,20 +11,16 @@ namespace DuAnDauDoi
     {
         private Button _currentSelectedButton = null;
         private readonly BANservice _banService = new BANservice();
-        private readonly Color SelectedColor = Color.SkyBlue;
-        private readonly Color AvailableColor = Color.LightGray;
-        private readonly Color ReservedColor = Color.Yellow;
-        private readonly Color OccupiedColor = Color.Red;
+        private readonly HOADONservice _hoadonService = new HOADONservice();
+        private readonly Image AvailableImage = global::DuAnDauDoi.Properties.Resources.istockphoto_1158657776_612x612;
+        private readonly Image ReservedImage = global::DuAnDauDoi.Properties.Resources.dadat;
+        private readonly Image OccupiedImage = global::DuAnDauDoi.Properties.Resources.cokhach;
 
         public FormBan()
         {
             InitializeComponent();
             flowLayoutPanel1.AutoScroll = true;
             flowLayoutPanel1.WrapContents = true;
-            btnGoi.Click += BtnGoi_CLick;
-            btnHD.Click += BtnHD_Click;
-            BtnSua.Click += BtnSua_Click;
-            btnThanhToan.Click += BtnThanhToan_Click;
             this.Load += (s, e) => CreateSeats();
         }
 
@@ -33,24 +29,26 @@ namespace DuAnDauDoi
             flowLayoutPanel1.Controls.Clear();
             var tables = _banService.GetAll();
             var sortedTables = tables
-            .OrderBy(t => {
-                int result;
-                return int.TryParse(t.Soban, out result) ? result : 0;
-            })
-            .ToList();
-            foreach (var table in tables)
+                .OrderBy(t => {
+                    int result;
+                    return int.TryParse(t.Soban, out result) ? result : 0;
+                })
+                .ToList();
+
+            foreach (var table in sortedTables) 
             {
                 Button seatButton = new Button
                 {
-                    Width = 100,
-                    Height = 100,
+                    Width = 150,
+                    Height = 150,
                     Text = $"{table.Soban}",
-                    Tag = table.Maban, 
+                    Tag = table.Maban,
                     Font = new Font("Arial", 10, FontStyle.Bold),
                     Margin = new Padding(10),
-                    TextAlign = ContentAlignment.MiddleCenter
+                    TextAlign = ContentAlignment.MiddleCenter,
+                    BackgroundImageLayout = ImageLayout.Stretch,
+                    FlatStyle = FlatStyle.Flat
                 };
-
                 SetButtonColorByStatus(seatButton, table.Status);
                 seatButton.Click += SeatButton_Click;
                 flowLayoutPanel1.Controls.Add(seatButton);
@@ -61,17 +59,17 @@ namespace DuAnDauDoi
         {
             if (status == "Trống")
             {
-                btn.BackColor = AvailableColor;
+                btn.BackgroundImage = AvailableImage;
                 btn.ForeColor = Color.Black;
             }
             else if (status == "Đã đặt bàn")
             {
-                btn.BackColor = ReservedColor;
+                btn.BackgroundImage = ReservedImage;
                 btn.ForeColor = Color.Black;
             }
             else
             {
-                btn.BackColor = OccupiedColor;
+                btn.BackgroundImage = OccupiedImage;
                 btn.ForeColor = Color.White;
             }
         }
@@ -80,27 +78,52 @@ namespace DuAnDauDoi
         {
             Button clickedButton = (Button)sender;
 
-            // Nếu nhấn lại chính bàn đang chọn -> Bỏ chọn
+            // 1. Xử lý logic chọn/bỏ chọn UI (giữ nguyên logic cũ của bạn)
             if (_currentSelectedButton == clickedButton)
             {
                 ResetSelection();
+                return;
+            }
+
+            if (_currentSelectedButton != null)
+            {
+                RefreshButtonAppearance(_currentSelectedButton);
+            }
+            _currentSelectedButton = clickedButton;
+
+            // 2. Lấy thông tin bàn từ Tag
+            int tableId = (int)clickedButton.Tag;
+            var table = _banService.GetById(tableId);
+            if (table == null) return;
+
+            // Cập nhật nhãn nút Đặt bàn (giữ nguyên logic cũ)
+            btnDb.Text = (table.Status == "Đã đặt bàn") ? "🕛 Hủy Đặt" : "🕛 Đặt Bàn";
+
+            // 3. LOGIC QUAN TRỌNG: Kiểm tra hóa đơn để mở Form tương ứng
+            // Chúng ta sử dụng hàm GetUnpaidInvoiceByTable mà bạn đã dùng trong FormSua
+            var currentHoadon = _hoadonService.GetUnpaidInvoiceByTable(table.Maban);
+
+            if (currentHoadon == null)
+            {
+                // TRƯỜNG HỢP 1: Chưa có hóa đơn -> Mở Form Gọi Món
+                FormGoiMon fGoi = new FormGoiMon(table);
+                if (fGoi.ShowDialog() == DialogResult.OK)
+                {
+                    RefreshButtonAppearance(clickedButton);
+                }
             }
             else
             {
-                // Hoàn tác màu cho bàn cũ trước đó
-                if (_currentSelectedButton != null)
+                // TRƯỜNG HỢP 2: Đã có hóa đơn -> Mở Form Sửa Món
+                FormSua fSua = new FormSua(table);
+                if (fSua.ShowDialog() == DialogResult.OK)
                 {
-                    RefreshButtonAppearance(_currentSelectedButton);
+                    RefreshButtonAppearance(clickedButton);
                 }
-
-                _currentSelectedButton = clickedButton;
-                clickedButton.BackColor = SelectedColor;
-
-                // Cập nhật nhãn nút Đặt bàn
-                int tableId = (int)clickedButton.Tag;
-                var table = _banService.GetById(tableId);
-                btnDb.Text = (table?.Status == "Đã đặt bàn") ? "🕛 Hủy Đặt" : "🕛 Đặt Bàn";
             }
+
+            // Sau khi đóng form, có thể reset selection hoặc giữ nguyên tùy bạn
+            // ResetSelection(); 
         }
 
         // Cập nhật diện mạo bàn từ Database
@@ -126,89 +149,6 @@ namespace DuAnDauDoi
             btnDb.Text = "🕛 Đặt Bàn";
         }
 
-
-        private void btnDb_Click(object sender, EventArgs e)
-        {
-            if (_currentSelectedButton == null)
-            {
-                MessageBox.Show("Vui lòng chọn bàn!");
-                return;
-            }
-
-            ExecuteTableAction(banToUpdate => {
-                if (banToUpdate.Status == "Đã đặt bàn")
-                {
-                    _banService.UpdateStatus(banToUpdate.Maban, "Trống");
-                    MessageBox.Show("Đã hủy đặt bàn!");
-                }
-                else if (banToUpdate.Status == "Trống")
-                {
-                    _banService.UpdateStatus(banToUpdate.Maban, "Đã đặt bàn");
-                    MessageBox.Show("Đặt bàn thành công!");
-                }
-                else
-                {
-                    MessageBox.Show("Bàn đang có khách, không thể thao tác!");
-                    return;
-                }
-                ResetSelection();
-            });
-        }
-
-        private void BtnGoi_CLick(object sender, EventArgs e)
-        {
-            if (_currentSelectedButton == null) { MessageBox.Show("Vui lòng chọn bàn!"); return; }
-            ExecuteTableAction(table => {
-                FormGoiMon f = new FormGoiMon(table);
-                if (f.ShowDialog() == DialogResult.OK) { 
-                    // Refresh UI if needed
-                    RefreshButtonAppearance(_currentSelectedButton);
-                }
-            });
-        }
-
-        private void BtnSua_Click(object sender, EventArgs e)
-        {
-            if (_currentSelectedButton == null) { MessageBox.Show("Vui lòng chọn bàn!"); return; }
-            ExecuteTableAction(table => {
-                 if (table.Status == "Trống")
-                {
-                    MessageBox.Show("Bàn trống không thể sửa món!");
-                    return;
-                }
-                FormSua f = new FormSua(table);
-                f.ShowDialog();
-                ResetSelection();
-            });
-        }
-
-        private void BtnThanhToan_Click(object sender, EventArgs e)
-        {
-            if (_currentSelectedButton == null) { MessageBox.Show("Vui lòng chọn bàn!"); return; }
-            ExecuteTableAction(table => {
-                if (table.Status == "Trống") return;
-                FormThanhToan f = new FormThanhToan(table);
-                f.ShowDialog();
-                ResetSelection();
-            });
-        }
-
-        private void BtnHD_Click(object sender, EventArgs e)
-        {
-            if (_currentSelectedButton == null) { MessageBox.Show("Vui lòng chọn bàn!"); return; }
-            ExecuteTableAction(table => {
-                if (table.Status == "Trống") return;
-                FormHoaDon f = new FormHoaDon(table);
-                f.ShowDialog();
-            });
-        }
-
-        private void BtnLS_Click(object sender, EventArgs e)
-        {
-            FormLichsu f = new FormLichsu();
-            f.ShowDialog();
-        }
-
         private void ExecuteTableAction(Action<Ban> action)
         {
             int tableId = (int)_currentSelectedButton.Tag;
@@ -219,9 +159,10 @@ namespace DuAnDauDoi
             }
         }
 
-        private void btnHD_Click_1(object sender, EventArgs e)
+        private void lịchSửToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            FormLichsu f = new FormLichsu();
+            f.ShowDialog();
         }
     }
 }

@@ -18,14 +18,15 @@ namespace DuAnDauDoi
         public FormHoaDon()
         {
             InitializeComponent();
-            btnHuy.Click += (s, e) => Close();
+            btnThanhToan.Click += (s, e) => Close();
             btnIn.Click += BtnIn_Click;
         }
 
         // Constructor 1: Mở từ bàn đang chọn (để thanh toán)
+        // Constructor 1: Mở từ bàn đang chọn (để thanh toán)
         public FormHoaDon(Ban table) : this()
         {
-            _table = table ?? throw new ArgumentNullException(nameof(table));
+            this._table = table;
             lbBAN.Text = $"Số Bàn: {_table.Soban}";
             LoadData(isHistory: false);
         }
@@ -57,11 +58,11 @@ namespace DuAnDauDoi
             }
 
             lbHd.Text = $"Hóa Đơn: {_currentHoadon.Mahd}";
-            lbBAN.Text = $"Số Bàn: {_currentHoadon.Maban}"; // Note: Maban is int, usually we want Soban but Hoadon only has Maban foreign key. If we want Soban we need to join or load Ban. Hoadon.Ban should be loaded if we include it.
+            lbBAN.Text = $"Số Bàn: {_currentHoadon.Maban}"; 
 
             foreach (var cthd in _currentHoadon.Cthds)
             {
-                var mon = cthd.Mon; // Updated from MamonNavigation
+                var mon = cthd.Mon;
                 decimal unitPrice = mon?.Giamon ?? 0m;
                 decimal lineTotal = unitPrice * (cthd.Sl ?? 0);
 
@@ -77,13 +78,24 @@ namespace DuAnDauDoi
 
         private void BtnIn_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(_maHD_LichSu))
+            if (_currentHoadon == null) return;
+
+            // Truyền dữ liệu sang FormThanhToan
+            var listDetails = _currentHoadon.Cthds.Select(ct => new Reports.HoaDonReportDTO
             {
-                this.Close();
-                return;
-            }
-            MessageBox.Show("Đã In hóa đơn.");
-            this.Close();
+                MaHD = _currentHoadon.Mahd,
+                SoBan = _currentHoadon.Maban,
+                NgayLap = _currentHoadon.Ngaylap,
+                TenMon = ct.Mon?.Tenmon,
+                SoLuong = ct.Sl ?? 0,
+                DonGia = ct.Mon?.Giamon ?? 0,
+                TongTien = _currentHoadon.Tongtien ?? 0,
+                ThanhTien = (ct.Sl ?? 0) * (ct.Mon?.Giamon ?? 0)
+            }).ToList();
+
+            FormThanhToan frmPrint = new FormThanhToan(_table, _currentHoadon.Mahd, CalculateTotal());
+            frmPrint.DataForReport = listDetails;
+            frmPrint.ShowDialog();
         }
 
         private decimal CalculateTotal()
@@ -99,6 +111,28 @@ namespace DuAnDauDoi
                     total += parsed;
             }
             return total;
+        }
+
+        private void btnThanhToan_Click(object sender, EventArgs e)
+        {
+            if (_currentHoadon == null) return;
+            DialogResult result = MessageBox.Show($"Xác nhận thanh toán cho bàn {_table?.Soban}?",
+                "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                try
+                {
+                    _hoadonService.PayOrder(_currentHoadon.Mahd, 0);
+                    MessageBox.Show("Thanh toán thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi thanh toán: " + ex.Message, "Lỗi");
+                }
+            }
         }
     }
 }

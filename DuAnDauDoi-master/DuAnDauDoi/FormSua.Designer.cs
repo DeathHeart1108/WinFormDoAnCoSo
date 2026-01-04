@@ -37,6 +37,7 @@ namespace DuAnDauDoi
             this.btnHuy = new System.Windows.Forms.Button();
             this.cboLoaimon = new System.Windows.Forms.ComboBox();
             this.btnXoa = new System.Windows.Forms.Button();
+            this.btnHoaDon = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMon)).BeginInit();
             this.SuspendLayout();
             // 
@@ -73,13 +74,13 @@ namespace DuAnDauDoi
             this.ColSl,
             this.ColGia});
             this.dgvMon.EnableHeadersVisualStyles = false;
-            this.dgvMon.Location = new System.Drawing.Point(595, 85);
+            this.dgvMon.Location = new System.Drawing.Point(665, 85);
             this.dgvMon.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dgvMon.Name = "dgvMon";
             this.dgvMon.RowHeadersWidth = 62;
             this.dgvMon.RowTemplate.Height = 35;
             this.dgvMon.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvMon.Size = new System.Drawing.Size(728, 370);
+            this.dgvMon.Size = new System.Drawing.Size(741, 370);
             this.dgvMon.TabIndex = 1;
             // 
             // ColMon
@@ -122,7 +123,7 @@ namespace DuAnDauDoi
             this.txtSL.Location = new System.Drawing.Point(845, 475);
             this.txtSL.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtSL.Name = "txtSL";
-            this.txtSL.Size = new System.Drawing.Size(478, 50);
+            this.txtSL.Size = new System.Drawing.Size(561, 50);
             this.txtSL.TabIndex = 3;
             // 
             // lbSL
@@ -147,7 +148,7 @@ namespace DuAnDauDoi
             this.btnXacnhan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnXacnhan.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.btnXacnhan.ForeColor = System.Drawing.Color.Black;
-            this.btnXacnhan.Location = new System.Drawing.Point(845, 545);
+            this.btnXacnhan.Location = new System.Drawing.Point(1022, 545);
             this.btnXacnhan.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnXacnhan.Name = "btnXacnhan";
             this.btnXacnhan.Size = new System.Drawing.Size(200, 70);
@@ -164,7 +165,7 @@ namespace DuAnDauDoi
             this.btnHuy.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnHuy.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.btnHuy.ForeColor = System.Drawing.Color.Black;
-            this.btnHuy.Location = new System.Drawing.Point(1172, 545);
+            this.btnHuy.Location = new System.Drawing.Point(1257, 545);
             this.btnHuy.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnHuy.Name = "btnHuy";
             this.btnHuy.Size = new System.Drawing.Size(149, 70);
@@ -184,10 +185,10 @@ namespace DuAnDauDoi
             "🥤 Nước Ngọt",
             "🍺 Bia",
             "💧 Nước Lọc"});
-            this.cboLoaimon.Location = new System.Drawing.Point(595, 15);
+            this.cboLoaimon.Location = new System.Drawing.Point(665, 15);
             this.cboLoaimon.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cboLoaimon.Name = "cboLoaimon";
-            this.cboLoaimon.Size = new System.Drawing.Size(728, 46);
+            this.cboLoaimon.Size = new System.Drawing.Size(741, 46);
             this.cboLoaimon.TabIndex = 8;
             // 
             // btnXoa
@@ -208,13 +209,32 @@ namespace DuAnDauDoi
             this.btnXoa.UseVisualStyleBackColor = false;
             this.btnXoa.Click += new System.EventHandler(this.btnXoa_Click);
             // 
+            // btnHoaDon
+            // 
+            this.btnHoaDon.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
+            this.btnHoaDon.BackgroundImage = global::DuAnDauDoi.Properties.Resources.istockphoto_1158657776_612x612;
+            this.btnHoaDon.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnHoaDon.FlatAppearance.BorderSize = 0;
+            this.btnHoaDon.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnHoaDon.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.btnHoaDon.ForeColor = System.Drawing.Color.Black;
+            this.btnHoaDon.Location = new System.Drawing.Point(748, 545);
+            this.btnHoaDon.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnHoaDon.Name = "btnHoaDon";
+            this.btnHoaDon.Size = new System.Drawing.Size(244, 70);
+            this.btnHoaDon.TabIndex = 10;
+            this.btnHoaDon.Text = "📝Hóa Đơn";
+            this.btnHoaDon.UseVisualStyleBackColor = false;
+            this.btnHoaDon.Click += new System.EventHandler(this.btnHoaDon_Click);
+            // 
             // FormSua
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(174)))), ((int)(((byte)(198)))), ((int)(((byte)(207)))));
             this.BackgroundImage = global::DuAnDauDoi.Properties.Resources.download;
-            this.ClientSize = new System.Drawing.Size(1333, 665);
+            this.ClientSize = new System.Drawing.Size(1418, 665);
+            this.Controls.Add(this.btnHoaDon);
             this.Controls.Add(this.btnXoa);
             this.Controls.Add(this.cboLoaimon);
             this.Controls.Add(this.btnHuy);
@@ -248,5 +268,6 @@ namespace DuAnDauDoi
         private Button btnHuy;
         private ComboBox cboLoaimon;
         private Button btnXoa;
+        private Button btnHoaDon;
     }
 }

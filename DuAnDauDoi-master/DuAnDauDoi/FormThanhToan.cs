@@ -4,6 +4,8 @@ using System.Linq;
 using System.Windows.Forms;
 using BLL.Service;
 using DAL.Entities;
+using Microsoft.Reporting.WinForms; // Thêm thư viện này
+using System.Collections.Generic;
 
 namespace DuAnDauDoi
 {
@@ -17,9 +19,70 @@ namespace DuAnDauDoi
         public FormThanhToan()
         {
             InitializeComponent();
-            btnHuy.Click += (s, e) => Close();
-            btnThanhToan.Click += BtnThanhToan_Click;
-            txtTien.TextChanged += TxtTien_TextChanged;
+            this.Load += FormThanhToan_Load;
+        }
+
+        private void FormThanhToan_Load(object sender, EventArgs e)
+        {
+            LoadReport();
+        }
+
+        public List<Reports.HoaDonReportDTO> DataForReport { get; set; }
+
+        private void LoadReport()
+        {
+            try
+            {
+                // Check if data is already provided
+                if (DataForReport != null && DataForReport.Count > 0)
+                {
+                    BindReport(DataForReport);
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(_mahd)) return;
+
+                // 1. Lấy dữ liệu chi tiết hóa đơn từ Service
+                var hoadon = _hoadonService.GetById(_mahd);
+                if (hoadon == null) return;
+
+                // 2. Chuyển đổi sang danh sách DTO để Report hiểu
+                // 2. Chuyển đổi sang danh sách DTO để Report hiểu
+                var reportData = hoadon.Cthds.Select(ct => new Reports.HoaDonReportDTO
+                {
+                    MaHD = hoadon.Mahd,
+                    SoBan = hoadon.Maban,
+                    NgayLap = hoadon.Ngaylap,
+                    TenMon = ct.Mon?.Tenmon,
+                    SoLuong = ct.Sl ?? 0,
+                    DonGia = ct.Mon?.Giamon ?? 0,
+                    ThanhTien = (ct.Sl ?? 0) * (ct.Mon?.Giamon ?? 0),
+                    TongTien = hoadon.Tongtien ?? 0
+                }).ToList();
+
+                BindReport(reportData);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi in: " + ex.Message);
+            }
+        }
+
+        private void BindReport(List<Reports.HoaDonReportDTO> reportData)
+        {
+             string reportPath = System.IO.Path.Combine(Application.StartupPath, "Reports", "rptHoaDon.rdlc");
+             if (!System.IO.File.Exists(reportPath))
+             {
+                // Fallback for dev environment or different structure
+                reportPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(Application.StartupPath, @"..\..\Reports\rptHoaDon.rdlc"));
+             }
+             
+             reportViewer1.LocalReport.ReportPath = reportPath;
+             reportViewer1.LocalReport.DataSources.Clear();
+             var source = new ReportDataSource("DataSetHoaDon", reportData); 
+             reportViewer1.LocalReport.DataSources.Add(source);
+
+             this.reportViewer1.RefreshReport();
         }
 
         public FormThanhToan(Ban table, string mahd = null, decimal total = 0m) : this()
@@ -27,88 +90,6 @@ namespace DuAnDauDoi
             _table = table ?? throw new ArgumentNullException(nameof(table));
             _mahd = mahd;
             _total = total;
-
-            // Nếu chưa có tổng tiền, tự động lấy từ DB
-            if (_total == 0m)
-            {
-                CalculateTotalFromDatabase();
-            }
-
-            lbBAN.Text = $"Số Bàn: {_table.Soban}";
-            lbTongTien.Text = $"Tổng Tiền: {_total:N0} VND";
-        }
-
-        private void TxtTien_TextChanged(object sender, EventArgs e)
-        {
-            string text = txtTien.Text.Replace(",", "");
-            if (decimal.TryParse(text, out decimal value))
-            {
-                if (txtTien.Focused)
-                {
-                    txtTien.Text = value.ToString("N0");
-                    txtTien.SelectionStart = txtTien.Text.Length;
-                }
-            }
-        }
-
-        private void CalculateTotalFromDatabase()
-        {
-             var hoadon = _hoadonService.GetUnpaidInvoiceByTable(_table.Maban);
-             if (hoadon != null)
-             {
-                 _mahd = hoadon.Mahd;
-                 _total = hoadon.Tongtien ?? 0;
-             }
-             else
-             {
-                 _total = 0;
-             }
-        }
-
-        private void BtnThanhToan_Click(object sender, EventArgs e)
-        {
-            // 1. Kiểm tra tiền khách đưa
-            string rawTien = txtTien.Text.Replace(",", "").Replace(".", "");
-            if (!decimal.TryParse(rawTien, out var given) || given <= 0)
-            {
-                MessageBox.Show("Vui lòng nhập số tiền khách trả hợp lệ.");
-                return;
-            }
-
-            // 2. Kiểm tra đủ tiền không
-            if (given < _total)
-            {
-                MessageBox.Show("Tiền khách đưa không đủ để thanh toán.");
-                return;
-            }
-
-            try
-            {
-                // Find current invoice again if missing
-                if (string.IsNullOrEmpty(_mahd))
-                {
-                    CalculateTotalFromDatabase();
-                }
-
-                if (!string.IsNullOrEmpty(_mahd))
-                {
-                    _hoadonService.PayOrder(_mahd, _total);
-                    
-                    decimal change = given - _total;
-                    MessageBox.Show($"Thanh toán thành công!\nTiền thối: {change:N0} VND", "Thông báo");
-
-                    this.DialogResult = DialogResult.OK;
-                    this.Close();
-                }
-                else
-                {
-                    MessageBox.Show("Không tìm thấy dữ liệu hóa đơn cho bàn này.");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi thanh toán: " + ex.Message);
-            }
         }
     }
 }

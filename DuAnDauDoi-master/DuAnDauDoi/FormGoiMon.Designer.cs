@@ -24,9 +24,12 @@ namespace DuAnDauDoi
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.lbBAN = new System.Windows.Forms.Label();
             this.dgvMon = new System.Windows.Forms.DataGridView();
+            this.ColMon = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColSl = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColGia = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.txtSL = new System.Windows.Forms.TextBox();
             this.lbSL = new System.Windows.Forms.Label();
@@ -34,9 +37,6 @@ namespace DuAnDauDoi
             this.btnHuy = new System.Windows.Forms.Button();
             this.cboLoaimon = new System.Windows.Forms.ComboBox();
             this.btnXoa = new System.Windows.Forms.Button();
-            this.ColMon = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColSl = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColGia = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMon)).BeginInit();
             this.SuspendLayout();
             // 
@@ -59,15 +59,15 @@ namespace DuAnDauDoi
             this.dgvMon.BackgroundColor = System.Drawing.Color.White;
             this.dgvMon.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvMon.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.Padding = new System.Windows.Forms.Padding(5);
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvMon.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Padding = new System.Windows.Forms.Padding(5);
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvMon.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvMon.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvMon.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColMon,
@@ -82,6 +82,27 @@ namespace DuAnDauDoi
             this.dgvMon.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvMon.Size = new System.Drawing.Size(656, 370);
             this.dgvMon.TabIndex = 1;
+            // 
+            // ColMon
+            // 
+            this.ColMon.HeaderText = "Món ";
+            this.ColMon.MinimumWidth = 8;
+            this.ColMon.Name = "ColMon";
+            this.ColMon.Width = 150;
+            // 
+            // ColSl
+            // 
+            this.ColSl.HeaderText = "SL";
+            this.ColSl.MinimumWidth = 8;
+            this.ColSl.Name = "ColSl";
+            this.ColSl.Width = 80;
+            // 
+            // ColGia
+            // 
+            this.ColGia.HeaderText = "Giá";
+            this.ColGia.MinimumWidth = 8;
+            this.ColGia.Name = "ColGia";
+            this.ColGia.Width = 150;
             // 
             // flowLayoutPanel1
             // 
@@ -188,27 +209,6 @@ namespace DuAnDauDoi
             this.btnXoa.Text = "🗑️Xóa";
             this.btnXoa.UseVisualStyleBackColor = false;
             this.btnXoa.Click += new System.EventHandler(this.btnXoa_Click);
-            // 
-            // ColMon
-            // 
-            this.ColMon.HeaderText = "Món ";
-            this.ColMon.MinimumWidth = 8;
-            this.ColMon.Name = "ColMon";
-            this.ColMon.Width = 150;
-            // 
-            // ColSl
-            // 
-            this.ColSl.HeaderText = "SL";
-            this.ColSl.MinimumWidth = 8;
-            this.ColSl.Name = "ColSl";
-            this.ColSl.Width = 80;
-            // 
-            // ColGia
-            // 
-            this.ColGia.HeaderText = "Giá";
-            this.ColGia.MinimumWidth = 8;
-            this.ColGia.Name = "ColGia";
-            this.ColGia.Width = 150;
             // 
             // FormGoiMon
             // 

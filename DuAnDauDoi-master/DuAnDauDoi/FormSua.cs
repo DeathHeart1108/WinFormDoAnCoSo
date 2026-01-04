@@ -242,5 +242,15 @@ namespace DuAnDauDoi
                     btn.BackColor = (m.Mamon == mamonId) ? Color.DodgerBlue : Color.WhiteSmoke;
             }
         }
+
+        private void btnHoaDon_Click(object sender, EventArgs e)
+        {
+            FormHoaDon f = new FormHoaDon(_table);
+            if (f.ShowDialog() == DialogResult.OK)
+            {
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
+        }
     }
 }
