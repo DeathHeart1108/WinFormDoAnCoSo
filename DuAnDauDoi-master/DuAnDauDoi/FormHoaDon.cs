@@ -84,7 +84,7 @@ namespace DuAnDauDoi
             var listDetails = _currentHoadon.Cthds.Select(ct => new Reports.HoaDonReportDTO
             {
                 MaHD = _currentHoadon.Mahd,
-                SoBan = _currentHoadon.Maban,
+                SoBan = _currentHoadon.Maban ?? 0,
                 NgayLap = _currentHoadon.Ngaylap,
                 TenMon = ct.Mon?.Tenmon,
                 SoLuong = ct.Sl ?? 0,

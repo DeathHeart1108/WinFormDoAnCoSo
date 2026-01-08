@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity;
+using BLL.DTO;
 
 namespace BLL.Service
 {
@@ -27,7 +28,7 @@ namespace BLL.Service
             {
                 return db.Hoadons
                     .Include(h => h.Cthds.Select(c => c.Mon))
-                    .FirstOrDefault(h => h.Maban == tableId && h.Status == 0);
+                    .FirstOrDefault(h => h.Maban == tableId && (h.Status == 0 || h.Status == null));
             }
         }
 
@@ -40,7 +41,7 @@ namespace BLL.Service
                  {
                      try
                      {
-                         var hoadon = db.Hoadons.FirstOrDefault(h => h.Maban == tableId && h.Status == 0);
+                         var hoadon = db.Hoadons.FirstOrDefault(h => h.Maban == tableId && (h.Status == 0 || h.Status == null));
                          string currentMahd;
                          
                          if (hoadon == null)
@@ -211,27 +212,84 @@ namespace BLL.Service
             }
         }
 
-        public object GetHistory(string searchText)
+        public List<LichSuHoaDonDTO> GetHistory(string searchText)
         {
              using (var db = new Model1())
             {
-                var query = db.Hoadons.Where(h => h.Status == 1); 
+                var query = db.Hoadons.Where(h => h.Status.HasValue && h.Status.Value == 1);
 
                 if (!string.IsNullOrEmpty(searchText))
                 {
-                    query = query.Where(h => h.Mahd.Contains(searchText) || h.Maban.ToString().Contains(searchText));
+                    query = query.Where(h => h.Mahd.Contains(searchText) || 
+                                           (h.Maban.HasValue && h.Maban.Value.ToString().Contains(searchText)));
                 }
 
                 return query.OrderByDescending(h => h.Ngayxuat)
-                    .Select(h => new
+                    .Select(h => new LichSuHoaDonDTO
                     {
-                        MaHD = h.Mahd,
-                        NgayLap = h.Ngaylap,
+                        MaHD = h.Mahd ?? "",
+                        NgayLap = (DateTime?)h.Ngaylap,
                         NgayThanhToan = h.Ngayxuat,
-                        SoBan = h.Maban,
-                        TongTien = h.Tongtien,
+                        SoBan = h.Maban ?? 0,
+                        TongTien = h.Tongtien ?? 0,
                         GiamGia = h.KHUYENMAI_HD ?? 0
                     }).ToList();
+            }
+        }
+
+        public DailyReportResult GetDailyReport()
+        {
+            using (var db = new Model1())
+            {
+                DateTime today = DateTime.Today;
+                DateTime tomorrow = today.AddDays(1);
+
+                var hoaDonHomNay = db.Hoadons
+                    .Where(h => h.Status.HasValue && h.Status.Value == 1 && h.Ngayxuat >= today && h.Ngayxuat < tomorrow)
+                    .ToList();
+
+                decimal tongDoanhThu = hoaDonHomNay.Sum(h => h.Tongtien ?? 0);
+                int soHoaDon = hoaDonHomNay.Count;
+
+                var maHoaDonHomNay = hoaDonHomNay.Select(h => h.Mahd).ToList();
+                int tongSoMon = db.Cthds
+                    .Where(ct => maHoaDonHomNay.Contains(ct.Mahd))
+                    .Sum(ct => (int?)(ct.Sl ?? 0)) ?? 0;
+
+                return new DailyReportResult
+                {
+                    TongDoanhThu = tongDoanhThu,
+                    TongSoMon = tongSoMon,
+                    SoHoaDon = soHoaDon
+                };
+            }
+        }
+
+        public DailyReportResult GetDailyReportByDate(DateTime selectedDate)
+        {
+            using (var db = new Model1())
+            {
+                DateTime startDate = selectedDate.Date;
+                DateTime endDate = startDate.AddDays(1);
+
+                var hoaDonTheoNgay = db.Hoadons
+                    .Where(h => h.Status.HasValue && h.Status.Value == 1 && h.Ngayxuat >= startDate && h.Ngayxuat < endDate)
+                    .ToList();
+
+                decimal tongDoanhThu = hoaDonTheoNgay.Sum(h => h.Tongtien ?? 0);
+                int soHoaDon = hoaDonTheoNgay.Count;
+
+                var maHoaDonTheoNgay = hoaDonTheoNgay.Select(h => h.Mahd).ToList();
+                int tongSoMon = db.Cthds
+                    .Where(ct => maHoaDonTheoNgay.Contains(ct.Mahd))
+                    .Sum(ct => (int?)(ct.Sl ?? 0)) ?? 0;
+
+                return new DailyReportResult
+                {
+                    TongDoanhThu = tongDoanhThu,
+                    TongSoMon = tongSoMon,
+                    SoHoaDon = soHoaDon
+                };
             }
         }
 
@@ -259,10 +317,10 @@ namespace BLL.Service
                 {
                     try
                     {
-                        var sourceHoadon = db.Hoadons.FirstOrDefault(h => h.Maban == sourceTableId && h.Status == 0);
+                        var sourceHoadon = db.Hoadons.FirstOrDefault(h => h.Maban == sourceTableId && (h.Status == 0 || h.Status == null));
                         if (sourceHoadon == null) return; // Không có gì để chuyển
 
-                        var destHoadon = db.Hoadons.FirstOrDefault(h => h.Maban == destTableId && h.Status == 0);
+                        var destHoadon = db.Hoadons.FirstOrDefault(h => h.Maban == destTableId && (h.Status == 0 || h.Status == null));
 
                         if (destHoadon == null)
                         {
@@ -316,25 +374,32 @@ namespace BLL.Service
                             // Ở đây ta tính đơn giản là cộng thêm sourceHoadon.Tongtien (nếu sourceHoadon.Tongtien đã đúng)
                             destHoadon.Tongtien = (destHoadon.Tongtien ?? 0) + (sourceHoadon.Tongtien ?? 0);
 
-                            // Xóa hóa đơn bàn nguồn
-                            db.Cthds.RemoveRange(sourceDetails); // Xóa chi tiết bàn nguồn
-                            db.Hoadons.Remove(sourceHoadon);     // Xóa hóa đơn bàn nguồn
+                                                        // Xóa hóa đơn bàn nguồn
+                                                        db.Cthds.RemoveRange(sourceDetails); // Xóa chi tiết bàn nguồn
+                                                        db.Hoadons.Remove(sourceHoadon);     // Xóa hóa đơn bàn nguồn
 
-                            // Cập nhật trạng thái bàn nguồn thành Trống
-                            var sourceBan = db.Bans.Find(sourceTableId);
-                            if (sourceBan != null) sourceBan.Status = "Trống";
-                        }
+                                                        // Cập nhật trạng thái bàn nguồn thành Trống
+                                                        var sourceBan = db.Bans.Find(sourceTableId);
+                                                        if (sourceBan != null) sourceBan.Status = "Trống";
+                                                    }
 
-                        db.SaveChanges();
-                        transaction.Commit();
-                    }
-                    catch
-                    {
-                        transaction.Rollback();
-                        throw;
-                    }
-                }
-            }
-        }
-    }
-}
+                                                    db.SaveChanges();
+                                                    transaction.Commit();
+                                                }
+                                                catch
+                                                {
+                                                    transaction.Rollback();
+                                                    throw;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                public class DailyReportResult
+                                {
+                                    public decimal TongDoanhThu { get; set; }
+                                    public int TongSoMon { get; set; }
+                                    public int SoHoaDon { get; set; }
+                                }
+                            }

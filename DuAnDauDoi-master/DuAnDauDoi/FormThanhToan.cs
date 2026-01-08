@@ -51,7 +51,7 @@ namespace DuAnDauDoi
                 var reportData = hoadon.Cthds.Select(ct => new Reports.HoaDonReportDTO
                 {
                     MaHD = hoadon.Mahd,
-                    SoBan = hoadon.Maban,
+                    SoBan = hoadon.Maban ?? 0,
                     NgayLap = hoadon.Ngaylap,
                     TenMon = ct.Mon?.Tenmon,
                     SoLuong = ct.Sl ?? 0,

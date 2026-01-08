@@ -20,6 +20,8 @@ namespace DuAnDauDoi
             };
             txtFind.TextChanged += TxtFind_TextChanged;
             btnHD.Click += BtnHD_Click;
+            btnChotCa.Click += BtnChotCa_Click;
+            btnChotCaNgay.Click += BtnChotCaNgay_Click;
         }
 
         private void SetupDataGridView()
@@ -54,12 +56,55 @@ namespace DuAnDauDoi
             LoadLichSuHoadon(txtFind.Text.Trim());
         }
 
-        private void BtnHD_Click(object sender, EventArgs e)
-        {
-            if (dataGridView1.CurrentRow == null) return;
-            string maHD = dataGridView1.CurrentRow.Cells["MaHD"].Value.ToString();
-            FormHoaDon frm = new FormHoaDon(maHD);
-            frm.ShowDialog();
+                private void BtnHD_Click(object sender, EventArgs e)
+                {
+                    if (dataGridView1.CurrentRow == null) return;
+                    string maHD = dataGridView1.CurrentRow.Cells["MaHD"].Value.ToString();
+                    FormHoaDon frm = new FormHoaDon(maHD);
+                    frm.ShowDialog();
+                }
+
+                private void BtnChotCa_Click(object sender, EventArgs e)
+                {
+                    try
+                    {
+                        var ketQua = _hoadonService.GetDailyReport();
+
+                        string thongBao = $"📊 BÁO CÁO CHỐT CA NGÀY {DateTime.Now:dd/MM/yyyy}\n\n" +
+                                         $"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n" +
+                                         $"💵 Tổng doanh thu: {ketQua.TongDoanhThu:N0} VNĐ\n\n" +
+                                         $"🍽️ Tổng số món đã bán: {ketQua.TongSoMon} món\n\n" +
+                                         $"📋 Số hóa đơn: {ketQua.SoHoaDon}\n\n" +
+                                         $"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
+
+                        MessageBox.Show(thongBao, "Chốt Ca", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Lỗi khi chốt ca: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+
+                private void BtnChotCaNgay_Click(object sender, EventArgs e)
+                {
+                    try
+                    {
+                        DateTime ngayChon = dateTimePicker1.Value.Date;
+                        var ketQua = _hoadonService.GetDailyReportByDate(ngayChon);
+
+                        string thongBao = $"📊 BÁO CÁO CHỐT CA NGÀY {ngayChon:dd/MM/yyyy}\n\n" +
+                                         $"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n" +
+                                         $"💵 Tổng doanh thu: {ketQua.TongDoanhThu:N0} VNĐ\n\n" +
+                                         $"🍽️ Tổng số món đã bán: {ketQua.TongSoMon} món\n\n" +
+                                         $"📋 Số hóa đơn: {ketQua.SoHoaDon}\n\n" +
+                                         $"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
+
+                        MessageBox.Show(thongBao, "Chốt Ca Theo Ngày", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Lỗi khi chốt ca theo ngày: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
         }
-    }
-}

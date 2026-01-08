@@ -20,14 +20,14 @@ namespace DAL.Entities
         public string Mahd { get; set; }
 
         [Column(TypeName = "date")]
-        public DateTime Ngaylap { get; set; }
+        public DateTime? Ngaylap { get; set; }
 
         [Column(TypeName = "date")]
         public DateTime? Ngayxuat { get; set; }
 
-        public int Status { get; set; }
+        public int? Status { get; set; }
 
-        public int Maban { get; set; }
+        public int? Maban { get; set; }
 
         [Column(TypeName = "money")]
         public decimal? Tongtien { get; set; }
